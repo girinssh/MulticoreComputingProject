@@ -1,7 +1,9 @@
+package project1;
+
 import java.util.*;
 import java.lang.*;
 
-// command-line execution example) java MatmultD 6 < mat500.txt
+// command-line execution example) java project1.MatmultD 6 < mat500.txt
 // 6 means the number of threads to use
 // < mat500.txt means the file that contains two matrices is given as standard input
 //
