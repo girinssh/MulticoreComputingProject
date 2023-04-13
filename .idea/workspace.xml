@@ -4,14 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="881aa009-f476-4a68-acb8-70211f9b4d34" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pc_dynamic_cyclic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pc_serial.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pc_static_block.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pc_static_cyclic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="881aa009-f476-4a68-acb8-70211f9b4d34" name="변경" comment="edit">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lab/Parallel_ex.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/project1/pc_dynamic_cyclic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MatmultD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MatmultD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/project1/MatmultD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pc_dynamic_cyclic.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pc_serial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/project1/pc_serial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pc_static_block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/project1/pc_static_block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pc_static_cyclic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/project1/pc_static_cyclic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,24 +57,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Git/MulticoreComputingProject&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/Git/MulticoreComputingProject",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Application.pc_static_cyclic">
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Parallel_ex">
+    <configuration name="Parallel_ex" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="lab.Parallel_ex" />
+      <module name="MulticoreComputing" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="lab.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="MulticoreComputing" />
@@ -79,22 +101,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="pc_dynamic_cyclic" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="project1.pc_dynamic_cyclic" />
+      <module name="MulticoreComputing" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="pc_serial" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="pc_serial" />
+      <option name="MAIN_CLASS_NAME" value="project1.pc_serial" />
       <module name="MulticoreComputing" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="pc_static_block" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="pc_static_block" />
+      <option name="MAIN_CLASS_NAME" value="project1.pc_static_block" />
       <module name="MulticoreComputing" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="pc_static_cyclic" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="pc_static_cyclic" />
+      <option name="MAIN_CLASS_NAME" value="project1.pc_static_cyclic" />
       <module name="MulticoreComputing" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -102,12 +131,16 @@
     </configuration>
     <list>
       <item itemvalue="Application.Unnamed" />
+      <item itemvalue="Application.Parallel_ex" />
+      <item itemvalue="Application.pc_dynamic_cyclic" />
       <item itemvalue="Application.pc_static_cyclic" />
       <item itemvalue="Application.pc_static_block" />
       <item itemvalue="Application.pc_serial" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Parallel_ex" />
+        <item itemvalue="Application.pc_dynamic_cyclic" />
         <item itemvalue="Application.pc_static_cyclic" />
         <item itemvalue="Application.pc_static_block" />
         <item itemvalue="Application.pc_serial" />
@@ -125,8 +158,17 @@
       <workItem from="1680152783046" duration="4000" />
       <workItem from="1680245864171" duration="4070000" />
       <workItem from="1680511081734" duration="9349000" />
-      <workItem from="1681048901975" duration="10594000" />
+      <workItem from="1681048901975" duration="21408000" />
+      <workItem from="1681358684678" duration="4387000" />
     </task>
+    <task id="LOCAL-00001" summary="edit">
+      <created>1681144487744</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1681144487744</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -142,5 +184,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="edit" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit" />
   </component>
 </project>
