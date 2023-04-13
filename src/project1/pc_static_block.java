@@ -1,7 +1,6 @@
-import java.util.ArrayList;
+package project1;
 
-public class pc_static_cyclic {
-
+public class pc_static_block {
     private static int NUM_END = 200000;
     private static int NUM_THREADS = 32;
     private static int counter = 0;
@@ -10,14 +9,28 @@ public class pc_static_cyclic {
             NUM_THREADS = Integer.parseInt(args[0]);
             NUM_END = Integer.parseInt(args[1]);
         }
-
         for(NUM_THREADS = 1; NUM_THREADS <= 32; NUM_THREADS++){
             counter = 0;
             int i;
-            pc_cyclic_thread[] threads = new pc_cyclic_thread[NUM_THREADS];
 
-            for(i = 0; i < NUM_THREADS; i++){
-                threads[i] = new pc_cyclic_thread(i * 10, NUM_THREADS * 10);
+            pc_block_thread[] threads = new pc_block_thread[NUM_THREADS];
+            {
+                int r = NUM_END % NUM_THREADS;
+                int s = 0;
+                int d = NUM_END / NUM_THREADS;
+                int e = d - 1;
+
+//                System.out.println("property: " + r + "\t" + d );
+
+                for(i = 0; i < NUM_THREADS; i++) {
+                    e += (r > 0 ? 1 : 0);
+//                    System.out.println("" + s + '\t' + e);
+
+                    threads[i] = new pc_block_thread(s, e);
+                    s = e+1;
+                    e = s + d - 1;
+                    r-=1;
+                }
             }
             long startTime= System.currentTimeMillis();
             for(i = 0; i < NUM_THREADS; i++){
@@ -42,25 +55,21 @@ public class pc_static_cyclic {
         counter++;
     }
 
-    static class pc_cyclic_thread extends Thread{
-        private ArrayList<Integer[]> pairs;
+    static class pc_block_thread extends Thread{
+        private int start;
+        private int end;
 
-        pc_cyclic_thread(int start, int bias){
+        pc_block_thread(int start, int end){
             super();
-            pairs = new ArrayList<>();
-            for(int i = start; i < NUM_END; i+=bias){
-                pairs.add(new Integer[]{i, i+10-1});
-            }
-//            System.out.println("" + start + "\t" + pairs.get(pairs.size()-1)[1]);
+            this.start = start;
+            this.end = end;
         }
 
         @Override
         public void run() {
-            for(Integer[] pair : pairs){
-                for(int i = pair[0]; i <= pair[1]; i++){
-                    if(isPrime(i)) {
-                        count();
-                    }
+            for(int i = start; i <= end; i++){
+                if(isPrime(i)) {
+                    count();
                 }
             }
         }

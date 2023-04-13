@@ -1,6 +1,8 @@
+package project1;
+
 import java.util.ArrayList;
 
-public class pc_dynamic_cyclic {
+public class pc_static_cyclic {
 
     private static int NUM_END = 200000;
     private static int NUM_THREADS = 32;
