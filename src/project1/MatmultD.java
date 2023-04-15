@@ -15,25 +15,28 @@ public class MatmultD
     private static Scanner sc = new Scanner(System.in);
     public static void main(String [] args)
     {
-        int thread_no=0;
-        if (args.length==1) thread_no = Integer.valueOf(args[0]);
-        else thread_no = 1;
+//        int thread_no=0;
+//        if (args.length==1) thread_no = Integer.valueOf(args[0]);
+//        else thread_no = 1;
 
         int a[][]=readMatrix();
         int b[][]=readMatrix();
 
-        long startTime = System.currentTimeMillis();
-        int[][] c=multMatrix(a,b);
-        long endTime = System.currentTimeMillis();
+        System.out.printf("a: %d x %d \n", a.length, a[0].length);
+        System.out.printf("b: %d x %d \n", b.length, b[0].length);
 
-        //printMatrix(a);
-        //printMatrix(b);
-        printMatrix(c);
-
-        //System.out.printf("thread_no: %d\n" , thread_no);
-        //System.out.printf("Calculation Time: %d ms\n" , endTime-startTime);
-
-        System.out.printf("[thread_no]:%2d , [Time]:%4d ms\n", thread_no, endTime-startTime);
+        int[] nths = new int[]{1, 2, 4, 6, 8, 10, 12, 14, 16, 32};
+        for(int thread_no : nths){
+            long startTime = System.currentTimeMillis();
+            int[][] c = multMatrixUsingThread(a, b, thread_no);
+            long endTime = System.currentTimeMillis();
+            //printMatrix(a);
+            //printMatrix(b);
+//            printMatrix(c);
+//        System.out.printf("thread_no: %d\n" , thread_no);
+//        System.out.printf("Calculation Time: %d ms\n" , endTime-startTime);
+            System.out.printf("[thread_no]:%2d , [Time]:%4d ms\n", thread_no, endTime-startTime);
+        }
     }
 
     public static int[][] readMatrix() {
@@ -63,68 +66,60 @@ public class MatmultD
         System.out.println();
         System.out.println("Matrix Sum = " + sum + "\n");
     }
-
-    public static int[][] multMatrix(int a[][], int b[][]){//a[m][n], b[n][p]
+    public static int[][] multMatrixUsingThread(int a[][], int b[][], int nths){//a[m][n], b[n][p]
         if(a.length == 0) return new int[0][0];
         if(a[0].length != b.length) return null; //invalid dims
 
         int n = a[0].length;
         int m = a.length;
         int p = b[0].length;
-        int ans[][] = new int[m][p];
+        int[][] ans = new int[m][p];
 
-        for(int i = 0;i < m;i++){
-            for(int j = 0;j < p;j++){
-                for(int k = 0;k < n;k++){
-                    ans[i][j] += a[i][k] * b[k][j];
+        multMatThread[] threads = new multMatThread[nths];
+        for(int i = 0; i < nths; i++){
+            threads[i] = new multMatThread(a, b, i, nths);
+            threads[i].start();
+        }
+
+        for(int i = 0; i < nths; i++){
+            try {
+                threads[i].join();
+                for(int j = i;j < m*p;j += nths){
+                    ans[j/p][j%p] += threads[i].ans[j/p][j%p];
                 }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
+
         return ans;
     }
-
-    class multMatThread extends Thread{
-        private ArrayList<int[]> poses;
-
-        private int[][] left, right;
-        private int n, m, p;
-        multMatThread(int[][] a, int[][] b){
-            poses = new ArrayList<>();
-            left = a;
-            right = b;
-            n = a[0].length;
-            m = a.length;
-            p = b[0].length;
-        }
-
-        void addTarget(int r, int c){
-            poses.add(new int[]{r, c});
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            for(int[] pos: poses){
-
-            }
-        }
+}
+class multMatThread extends Thread{
+    private final int[][] left;
+    private final int[][] right;
+    private int id = 0;
+    private final int d;
+    private final int n, m, p;
+    final int[][] ans;
+    multMatThread(int[][] a, int[][] b, int _id, int nth){
+        left = a;
+        right = b;
+        n = a[0].length;
+        m = a.length;
+        p = b[0].length;
+        id = _id;
+        d = nth;
+        ans = new int[m][p];
     }
-    public static int[][] multMatrixUsingThread(int a[][], int b[][]){//a[m][n], b[n][p]
-        if(a.length == 0) return new int[0][0];
-        if(a[0].length != b.length) return null; //invalid dims
 
-        int n = a[0].length;
-        int m = a.length;
-        int p = b[0].length;
-        int ans[][] = new int[m][p];
-
-        for(int i = 0;i < m;i++){
-            for(int j = 0;j < p;j++){
-                for(int k = 0;k < n;k++){
-                    ans[i][j] += a[i][k] * b[k][j];
-                }
+    @Override
+    public void run() {
+        super.run();
+        for(int i = id;i < m*p;i+=d){
+            for(int k = 0;k < n;k++){
+                ans[i/p][i%p] += left[i/p][k] * right[k][i%p];
             }
         }
-        return ans;
     }
 }

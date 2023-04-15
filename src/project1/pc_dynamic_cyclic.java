@@ -53,7 +53,6 @@ class dynamic_manager_thread extends Thread{
         }
         return ret;
     }
-
     @Override
     public void run() {
         super.run();
