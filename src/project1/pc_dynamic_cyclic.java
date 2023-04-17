@@ -20,18 +20,25 @@ public class pc_dynamic_cyclic {
     }
 
     public static void tryTest(int numOfThreads){
-        long startTime= System.currentTimeMillis();
-        dynamic_manager_thread dmthread = new dynamic_manager_thread(numOfThreads, NUM_END);
-        dmthread.start();
-        try {
-            dmthread.join();
-        } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
+        int NUM_TRY = 1;
+        long sumTimeDiff = 0;
+        long sumCount = 0;
+        for(int j = 0; j < NUM_TRY; j++){
+            long startTime= System.currentTimeMillis();
+            dynamic_manager_thread dmthread = new dynamic_manager_thread(numOfThreads, NUM_END);
+            dmthread.start();
+            try {
+                dmthread.join();
+            } catch (InterruptedException e) {
+    //                throw new RuntimeException(e);
+            }
+            long endTime = System.currentTimeMillis();
+            sumTimeDiff += endTime - startTime;
+            sumCount += dmthread.count;
         }
-        long endTime = System.currentTimeMillis();
-        long timeDiff = endTime - startTime;
-        System.out.println("Program Execution Time: " + timeDiff + "ms");
-        System.out.println("1..." + (NUM_END) + " prime# counter=" + dmthread.getCounter());
+        System.out.println("# NUM_THREAD: " + numOfThreads);
+        System.out.println("Program Execution Time: " + sumTimeDiff/NUM_TRY + "ms");
+        System.out.println("1..." + (NUM_END-1) + " prime# counter=" + sumCount/NUM_TRY);
     }
 }
 
@@ -45,7 +52,7 @@ class dynamic_manager_thread extends Thread{
     }
 
     private int idx = 0;
-
+    int count = 0;
     protected synchronized int getNext(){
         int ret = idx;
         if(idx < NUM_END){
@@ -64,31 +71,33 @@ class dynamic_manager_thread extends Thread{
         for(int i = 0; i < NUM_THREADS; i++){
             try {
                 dthreads[i].join();
+                count += dthreads[i].count;
+                System.out.println("Thread_" + NUM_THREADS + "_" + i + "_ExecTime: " + dthreads[i].getTimeDiff());
             } catch (InterruptedException e) {
 //                throw new RuntimeException(e);
             }
         }
     }
-    private int counter = 0;
-    public int getCounter(){
-        return counter;
-    }
-    private synchronized void count(){
-        counter++;
-    }
     class dynamic_thread extends Thread{
 
+        private long startTime = 0;
+        private long endTime = 0;
+        private long getTimeDiff(){
+            return endTime - startTime;
+        }
         dynamic_thread(){}
-
+        int count=0;
         public void run(){
+            startTime = System.currentTimeMillis();
             while(idx < NUM_END){
                 int s = getNext();
                 for(int i = s; i < s+10; i++){
                     if(isPrime(i)){
-                        count();
+                        this.count++;
                     }
                 }
             }
+            endTime = System.currentTimeMillis();
         }
         private boolean isPrime(int x) {
             int i;
@@ -98,5 +107,7 @@ class dynamic_manager_thread extends Thread{
             }
             return true;
         }
+
+
     }
 }

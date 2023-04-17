@@ -6,7 +6,6 @@ public class pc_static_cyclic {
 
     private static int NUM_END = 200000;
 //    private static int NUM_THREADS = 32;
-    private static int counter = 0;
     public static void main(String[] args){
         if(args.length == 2) {
             int NUM_THREADS = Integer.parseInt(args[0]);
@@ -21,41 +20,47 @@ public class pc_static_cyclic {
         }
 
     }
-
     static void tryTest(int NUM_THREADS){
-        counter = 0;
-        int i;
-        pc_cyclic_thread[] threads = new pc_cyclic_thread[NUM_THREADS];
 
-        for(i = 0; i < NUM_THREADS; i++){
-            threads[i] = new pc_cyclic_thread(i * 10, NUM_THREADS * 10);
-        }
-        long startTime= System.currentTimeMillis();
-        for(i = 0; i < NUM_THREADS; i++){
-            threads[i].start();
-        }
-        for(i = 0; i < NUM_THREADS; i++){
-            try {
-                threads[i].join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+        int NUM_TRY = 1;
+        long sumTimeDiff = 0;
+        long sumCount = 0;
+        for(int j = 0; j < NUM_TRY; j++){
+            int count = 0;
+            int i;
+            long startTime= System.currentTimeMillis();
+            pc_cyclic_thread[] threads = new pc_cyclic_thread[NUM_THREADS];
+            for(i = 0; i < NUM_THREADS; i++){
+                threads[i] = new pc_cyclic_thread(i * 10, NUM_THREADS * 10);
+                threads[i].start();
             }
+            for(i = 0; i < NUM_THREADS; i++){
+                try {
+                    threads[i].join();
+                    count += threads[i].count;
+                    System.out.println("Thread_" + NUM_THREADS + "_" + i + "_ExecTime: " + threads[i].getTimeDiff());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            long endTime = System.currentTimeMillis();
+            sumTimeDiff += endTime - startTime;
+            sumCount += count;
         }
-        long endTime = System.currentTimeMillis();
-        long timeDiff = endTime - startTime;
         System.out.println("# NUM_THREAD: " + NUM_THREADS);
-        System.out.println("Program Execution Time: " + timeDiff + "ms");
-        System.out.println("1..." + (NUM_END-1) + " prime# counter=" + counter);
-
-    }
-
-    static synchronized void count(){
-        counter++;
+        System.out.println("Program Execution Time: " + sumTimeDiff/NUM_TRY + "ms");
+        System.out.println("1..." + (NUM_END-1) + " prime# counter=" + sumCount/NUM_TRY);
     }
 
     static class pc_cyclic_thread extends Thread{
         int id;
         int bias;
+        int count = 0;
+        private long startTime = 0;
+        private long endTime = 0;
+        private long getTimeDiff(){
+            return endTime - startTime;
+        }
 
         pc_cyclic_thread(int _id, int _bias){
             super();
@@ -66,13 +71,15 @@ public class pc_static_cyclic {
 
         @Override
         public void run() {
+            startTime = System.currentTimeMillis();
             for(int j = id; j < NUM_END; j += bias){
                 for(int i = j; i < j+10; i++){
                     if(isPrime(i)) {
-                        count();
+                        count++;
                     }
                 }
             }
+            endTime = System.currentTimeMillis();
         }
         private boolean isPrime(int x){
             int i;

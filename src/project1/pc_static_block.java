@@ -3,7 +3,6 @@ package project1;
 public class pc_static_block {
     private static int NUM_END = 200000;
 //    private static int NUM_THREADS = 32;
-    private static int counter = 0;
     public static void main(String[] args){
         if(args.length == 2) {
             int NUM_THREADS = Integer.parseInt(args[0]);
@@ -19,67 +18,80 @@ public class pc_static_block {
     }
 
     public static void tryTest(int NUM_THREADS){
-        counter = 0;
-        int i;
+        int NUM_TRY = 1;
+        long sumTimeDiff = 0;
+        long sumCount = 0;
+        // 20번 반복
+        for(int j = 0; j < NUM_TRY; j++){
+            int count = 0;
+            int i;
 
-        pc_block_thread[] threads = new pc_block_thread[NUM_THREADS];
-        {
-            int r = NUM_END % NUM_THREADS;
-            int s = 0;
-            int d = NUM_END / NUM_THREADS;
-            int e = d - 1;
+            long startTime= System.currentTimeMillis();
+            pc_block_thread[] threads = new pc_block_thread[NUM_THREADS];
+            {
+                int r = NUM_END % NUM_THREADS;
+                int s = 0;
+                int d = NUM_END / NUM_THREADS;
+                int e = d - 1 + (r > 0 ? 1 : 0);
+    //                System.out.println("property: " + r + "\t" + d );
+                for(i = 0; i < NUM_THREADS; i++) {
+    //                    System.out.println("" + s + '\t' + e);
 
-//                System.out.println("property: " + r + "\t" + d );
-
-            for(i = 0; i < NUM_THREADS; i++) {
-                e += (r > 0 ? 1 : 0);
-//                    System.out.println("" + s + '\t' + e);
-
-                threads[i] = new pc_block_thread(s, e);
-                s = e+1;
-                e = s + d - 1;
-                r-=1;
+                    threads[i] = new pc_block_thread(s, e);
+                    threads[i].start();
+                    s = e+1;
+                    e = s + d - 1;
+                    e += (r > 0 ? 1 : 0);
+                    r-=1;
+                }
             }
-        }
-        long startTime= System.currentTimeMillis();
-        for(i = 0; i < NUM_THREADS; i++){
-            threads[i].start();
-        }
-        for(i = 0; i < NUM_THREADS; i++){
-            try {
-                threads[i].join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+
+            for(i = 0; i < NUM_THREADS; i++){
+                try {
+                    threads[i].join();
+                    count += threads[i].getCount();
+                    System.out.println("Thread_" + NUM_THREADS + "_" + i + "_" + j + "_ExecTime: " + threads[i].getTimeDiff());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            long endTime = System.currentTimeMillis();
+            sumTimeDiff += endTime - startTime;
+            sumCount += count;
         }
-        long endTime = System.currentTimeMillis();
-        long timeDiff = endTime - startTime;
         System.out.println("# NUM_THREAD: " + NUM_THREADS);
-        System.out.println("Program Execution Time: " + timeDiff + "ms");
-        System.out.println("1..." + (NUM_END-1) + " prime# counter=" + counter);
-    }
-
-    static synchronized void count(){
-        counter++;
+        System.out.println("Program Execution Time: " + sumTimeDiff/NUM_TRY + "ms"); // Mean Time Diff
+        System.out.println("1..." + (NUM_END-1) + " prime# counter=" + sumCount/NUM_TRY);
     }
 
     static class pc_block_thread extends Thread{
-        private int start;
-        private int end;
+        private final int start, end;
+        private int count;
 
+        int getCount(){
+            return count;
+        }
+        private long startTime = 0;
+        private long endTime = 0;
+        private long getTimeDiff(){
+            return endTime - startTime;
+        }
         pc_block_thread(int start, int end){
             super();
             this.start = start;
             this.end = end;
+            count = 0;
         }
 
         @Override
         public void run() {
+            startTime = System.currentTimeMillis();
             for(int i = start; i <= end; i++){
                 if(isPrime(i)) {
-                    count();
+                    count++;
                 }
             }
+            endTime = System.currentTimeMillis();
         }
         private boolean isPrime(int x){
             int i;

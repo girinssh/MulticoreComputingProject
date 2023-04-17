@@ -25,18 +25,27 @@ public class MatmultD
         System.out.printf("a: %d x %d \n", a.length, a[0].length);
         System.out.printf("b: %d x %d \n", b.length, b[0].length);
 
+        int trial = 20;
+
         int[] nths = new int[]{1, 2, 4, 6, 8, 10, 12, 14, 16, 32};
         for(int thread_no : nths){
-            long startTime = System.currentTimeMillis();
-            int[][] c = multMatrixUsingThread(a, b, thread_no);
-            long endTime = System.currentTimeMillis();
-            //printMatrix(a);
-            //printMatrix(b);
-//            printMatrix(c);
+            long timediff = 0;
+            for(int i = 0; i < trial; i++){
+                long startTime = System.currentTimeMillis();
+                int[][] c = multMatrixUsingThread(a, b, thread_no);
+                long endTime = System.currentTimeMillis();
+                timediff += endTime - startTime;
+
+                //printMatrix(a);
+                //printMatrix(b);
+                if(thread_no == 1 && i == 0)
+                   printMatrix(c);
 //        System.out.printf("thread_no: %d\n" , thread_no);
 //        System.out.printf("Calculation Time: %d ms\n" , endTime-startTime);
-            System.out.printf("[thread_no]:%2d , [Time]:%4d ms\n", thread_no, endTime-startTime);
+            }
+            System.out.printf("[thread_no]:%2d , [Time]:%4d ms\n", thread_no, timediff/trial);
         }
+
     }
 
     public static int[][] readMatrix() {
