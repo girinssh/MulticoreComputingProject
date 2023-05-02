@@ -25,7 +25,7 @@ public class MatmultD
         System.out.printf("a: %d x %d \n", a.length, a[0].length);
         System.out.printf("b: %d x %d \n", b.length, b[0].length);
 
-        int trial = 20;
+        int trial = 1;
 
         int[] nths = new int[]{1, 2, 4, 6, 8, 10, 12, 14, 16, 32};
         for(int thread_no : nths){
@@ -93,6 +93,7 @@ public class MatmultD
         for(int i = 0; i < nths; i++){
             try {
                 threads[i].join();
+//                System.out.println("" + nths + "_" + i + "\t" + threads[i].timeDiff());
                 for(int j = i;j < m*p;j += nths){
                     ans[j/p][j%p] += threads[i].ans[j/p][j%p];
                 }
@@ -111,6 +112,9 @@ class multMatThread extends Thread{
     private final int d;
     private final int n, m, p;
     final int[][] ans;
+
+    private long start, end;
+
     multMatThread(int[][] a, int[][] b, int _id, int nth){
         left = a;
         right = b;
@@ -125,10 +129,15 @@ class multMatThread extends Thread{
     @Override
     public void run() {
         super.run();
+        start = System.currentTimeMillis();
         for(int i = id;i < m*p;i+=d){
             for(int k = 0;k < n;k++){
                 ans[i/p][i%p] += left[i/p][k] * right[k][i%p];
             }
         }
+        end = System.currentTimeMillis();
+    }
+    public long timeDiff(){
+        return end - start;
     }
 }
