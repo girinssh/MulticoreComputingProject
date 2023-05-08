@@ -1,34 +1,25 @@
-package project2.prob1;
+package project2.prob2;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 class ParkingGarage {
-
-    private ArrayBlockingQueue<Integer> queue;
+    private Semaphore sem;
 
     public ParkingGarage(int places) {
         if (places < 0)
             places = 0;
 
-        this.queue = new ArrayBlockingQueue<>(places);
+        this.sem = new Semaphore(places);
     }
-    public synchronized void enter() { // enter parking garage
-        try{
-            queue.put(queue.remainingCapacity());
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-    public synchronized void leave() { // leave parking garage
+    public void enter() { // enter parking garage
         try {
-            queue.take();
+            sem.acquire();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-    public synchronized int getPlaces()
-    {
-        return queue.remainingCapacity();
+    public void leave() { // leave parking garage
+        sem.release();
     }
 }
 
@@ -82,8 +73,7 @@ class Car extends Thread {
     }
 }
 
-
-public class ParkingGarageOperation {
+public class ParkingGarageSemaphore {
     public static void main(String[] args){
         ParkingGarage parkingGarage = new ParkingGarage(7);
         for (int i=1; i<= 10; i++) {
